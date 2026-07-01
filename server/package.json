@@ -1,0 +1,23 @@
+{
+	"name": "php-ci3x-intellisense-server",
+	"description": "Language server in node for php-ci3x-intellisense.",
+	"version": "0.1.1",
+	"author": "small",
+	"license": "MIT",
+	"engines": {
+		"node": ">=18"
+	},
+	"dependencies": {
+		"vscode-languageserver": "^10.1.0",
+		"vscode-languageserver-textdocument": "^1.0.12",
+		"vscode-uri": "^3.1.0"
+	},
+	"scripts": {
+		"compile": "esbuild src/server.ts --bundle --platform=node --format=cjs --target=node18 --sourcemap --outfile=../client/server/server.js --external:vscode",
+		"watch": "esbuild src/server.ts --bundle --platform=node --format=cjs --target=node18 --sourcemap --outfile=../client/server/server.js --external:vscode --watch"
+	},
+	"devDependencies": {
+		"esbuild": "^0.28.1",
+		"typescript": "^6.0.3"
+	}
+}

@@ -1,0 +1,100 @@
+{
+	"name": "php-ci3x-intellisense",
+	"displayName": "PHP Codeigniter 3.X Intellisense",
+	"description": "Code completion for PHP CodeIgniter 3.X framework",
+	"author": "Code2Business.com",
+	"license": "MIT",
+	"version": "0.1.0",
+	"publisher": "code2business",
+	"engines": {
+		"vscode": "^1.90.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"keywords": [
+		"PHP",
+		"codeigniter"
+	],
+	"icon": "image/CI.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/code2business-open/ci3x-vscode-intelisense.git"
+	},
+	"bugs": {
+		"url": "https://github.com/code2business-open/ci3x-vscode-intelisense/issues"
+	},
+	"activationEvents": [
+		"onLanguage:php"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "CI autoload",
+			"properties": {
+				"CI.ignoreSymbols": {
+					"type": "boolean",
+					"default": false,
+					"description": "Set true if you are using other extension to display symbols, deal with $this, and static vars."
+				},
+				"CI.model": {
+					"type": [
+						"array",
+						"object"
+					],
+					"default": [],
+					"description": "Auto load models. Eg: ['user/account'] or {'whatilike':'Ori_model'} for alisa"
+				},
+				"CI.library": {
+					"type": [
+						"array",
+						"object"
+					],
+					"default": [],
+					"description": "Auto load library. Eg: ['user','foo/account'] or {'whatilike':'Ori_library'} for alisa"
+				},
+				"CI.other": {
+					"type": "array",
+					"default": [
+						"system/core/Common.php"
+					],
+					"description": "Path of files that need parse. That is just for addition const support."
+				},
+				"CI.system": {
+					"type": "string",
+					"default": "system",
+					"description": "Path of CI's system folder."
+				},
+				"CI.app": {
+					"type": "string",
+					"default": "application",
+					"description": "Path of CI's application folder."
+				},
+				"CI.viewFilesFormat": {
+					"type": "string",
+					"default": "php",
+					"description": "File format of view files. Eg: php or tpl or twig"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "extension.refreshModel",
+				"title": "CI: refresh Model"
+			}
+		]
+	},
+	"scripts": {
+		"compile": "tsc -p ./ && esbuild src/extension.ts --bundle --platform=node --format=cjs --target=node18 --external:vscode --sourcemap --outfile=out/src/extension.js",
+		"watch": "tsc -w -p ./"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^26.1.0",
+		"@types/vscode": "1.90.0",
+		"esbuild": "^0.28.1",
+		"typescript": "^6.0.3",
+		"vscode-languageclient": "^10.1.0"
+	}
+}

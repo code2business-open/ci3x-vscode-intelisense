@@ -1,0 +1,26 @@
+{
+	"name": "php-ci3x-intellisense",
+	"private": true,
+	"displayName": "PHP Codeigniter 3.X Intellisense",
+	"description": "Code completion for PHP CodeIgniter 3.X framework",
+	"author": "Code2Business.com",
+	"license": "MIT",
+	"version": "0.1.0",
+	"publisher": "code2business",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/code2business-open/ci3x-vscode-intelisense.git"
+	},
+	"scripts": {
+		"compile": "pnpm --dir server run compile && pnpm --dir client run compile",
+		"compile:client": "pnpm --dir client run compile",
+		"compile:server": "pnpm --dir server run compile",
+		"watch": "pnpm --parallel --dir server run watch & pnpm --dir client run watch",
+		"watch:client": "pnpm --dir client run watch",
+		"watch:server": "pnpm --dir server run watch"
+	},
+	"devDependencies": {
+		"@types/node": "^26.1.0",
+		"typescript": "^6.0.3"
+	}
+}

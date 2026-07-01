@@ -1,0 +1,8 @@
+out
+client/server
+node_modules
+.npm
+.pnpm-store
+dist
+pnpm*
+client/*.vsix
