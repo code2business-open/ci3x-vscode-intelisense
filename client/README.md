@@ -17,11 +17,16 @@ The extension starts when you open a PHP file in a workspace that contains a Cod
 - Supports variables declared in models, such as `$this->mymodel->some_variable`.
 - Refreshes model discovery with the `CI: refresh Model` command.
 
-Library files are parsed when you open a file that loads them, such as:
+Application libraries are discovered automatically. Library files are also
+parsed when you open a file that loads them, such as:
 
 ```php
 $this->load->library('foo');
+$this->CI->load->library('foo');
 ```
+
+The loaded library is then completed through either `$this->foo` or
+`$this->CI->foo`, including its public methods.
 
 ### Document Symbols
 

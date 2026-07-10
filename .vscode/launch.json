@@ -8,7 +8,8 @@
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceRoot}/client"
+				"--extensionDevelopmentPath=${workspaceRoot}/client",
+				"${input:ci3ProjectPath}"
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
@@ -27,6 +28,13 @@
 			"outFiles": [
 				"${workspaceFolder}/client/server/**/*.js"
 			]
+		}
+	],
+	"inputs": [
+		{
+			"id": "ci3ProjectPath",
+			"type": "promptString",
+			"description": "Absolute path to the CodeIgniter 3 project used to test the extension"
 		}
 	]
 }

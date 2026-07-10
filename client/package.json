@@ -4,7 +4,7 @@
 	"description": "Code completion for PHP CodeIgniter 3.X framework",
 	"author": "Code2Business.com",
 	"license": "MIT",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"publisher": "code2business",
 	"engines": {
 		"vscode": "^1.90.0"

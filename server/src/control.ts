@@ -72,7 +72,11 @@ export class loader {
 	//root of the workspace
 	static root: URI = null;
 	static re = {
-		loader: /\$this->load->(.+?)\((.+?)\);/g,
+		// Libraries commonly keep the CodeIgniter instance in `$this->CI`, while
+		// controllers access the loader directly through `$this`. Support both
+		// forms (and the usual local `$CI` variable) so their loaded classes are
+		// added to the completion cache.
+		loader: /(?:\$this(?:->CI)?|\$CI)->load->(model|library)\s*\(([\s\S]*?)\)\s*;/g,
 		isStatic: /([a-zA-Z0-9_]*)::([a-zA-Z0-9_\$]*)$/,
 	};
 	logger = null;
@@ -380,6 +384,42 @@ export class loader {
 			return null;
 		}
 		return { contents: data.document };
+	}
+
+	initLibraries(): void {
+		this.cache.library = new Map<string, cache>();
+		const root = `${loader.root.fsPath}/${this.settings.app}/libraries/`;
+		this._initLibraries(root, '');
+	}
+
+	private _initLibraries(root: string, dir: string): void {
+		let files: string[];
+		try {
+			files = fs.readdirSync(root + dir);
+		} catch (error) {
+			this.logger && this.logger.log(`read dir fail:${root + dir}`);
+			return;
+		}
+
+		for (const file of files) {
+			const fullPath = root + dir + file;
+			let info: fs.Stats;
+			try {
+				info = fs.lstatSync(fullPath);
+			} catch (error) {
+				continue;
+			}
+
+			if (info.isDirectory()) {
+				this._initLibraries(root, dir + file + '/');
+			} else if (file.endsWith('.php')) {
+				const name = dir + file.slice(0, -4);
+				const displayName = parse.parse.modFirst(file.slice(0, -4), false);
+				this.cache.library.set(name, null);
+				this.display.set(displayName, 'library');
+				if (displayName !== name) this.alias.set(displayName, name);
+			}
+		}
 	}
 
 	initModels(): void {

@@ -3,3 +3,5 @@ yarn.lock
 src/*
 tsconfig.json
 webpack.config.js
+pnpm-lock.yaml
+pnpm-workspace.yaml

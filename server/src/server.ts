@@ -68,6 +68,7 @@ connection.onDidChangeConfiguration((change) => {
 	mLoader.settings = (<loader.Settings>change.settings).CI;
 	var path: string, index: string;
 	connection.sendNotification('showStatus');
+	mLoader.initLibraries();
 	for (index in mLoader.settings.library) {
 		path = mLoader.settings.library[index];
 		mLoader.parseFile(path, 'library');
