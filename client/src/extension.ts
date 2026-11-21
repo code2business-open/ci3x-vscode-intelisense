@@ -1,6 +1,17 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { workspace as Workspace, window as Window, ExtensionContext, TextDocument, LogOutputChannel, WorkspaceFolder, Uri, window, StatusBarItem } from 'vscode';
+import {
+	workspace as Workspace,
+	window as Window,
+	commands,
+	ExtensionContext,
+	TextDocument,
+	LogOutputChannel,
+	WorkspaceFolder,
+	Uri,
+	window,
+	StatusBarItem,
+} from 'vscode';
 
 import { LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from 'vscode-languageclient/node';
 
@@ -43,6 +54,15 @@ export function activate(context: ExtensionContext) {
 	let module = context.asAbsolutePath(path.join('server', 'server.js'));
 	// let module = context.asAbsolutePath(path.join('../server', 'out/server.js'));
 	let outputChannel: LogOutputChannel = Window.createOutputChannel('php-ci3x-intellisense', { log: true });
+	context.subscriptions.push(
+		commands.registerCommand('extension.refreshModel', () =>
+			Promise.all(
+				Array.from(clients.values(), (client) =>
+					client.sendRequest('workspace/executeCommand', { command: 'extension.refreshModel' }),
+				),
+			),
+		),
+	);
 
 	function didOpenTextDocument(document: TextDocument): void {
 		// We are only interested in language mode text

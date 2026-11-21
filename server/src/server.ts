@@ -57,9 +57,6 @@ connection.onInitialize((params): InitializeResult => {
 				resolveProvider: false,
 				triggerCharacters: ['>', ':'],
 			},
-			executeCommandProvider: {
-				commands: ['extension.refreshModel'],
-			},
 		},
 	};
 });
@@ -90,16 +87,21 @@ connection.onDidChangeConfiguration((change) => {
 		mLoader.loadOther(path);
 	}
 	mLoader.initModels();
+	// Documents can be opened before the initial configuration notification.
+	// Parse them now that application and system paths are available.
+	for (const document of documents.all()) {
+		if (document.languageId === 'php') mLoader.parseLoader(document.getText());
+	}
 	connection.sendNotification('hideStatus');
 });
 
 documents.onDidOpen((e) => {
-	if (e.document.languageId != 'php') return;
+	if (e.document.languageId != 'php' || !mLoader.settings) return;
 	mLoader.parseLoader(e.document.getText());
 });
 
 documents.onDidSave((e) => {
-	if (e.document.languageId != 'php') return;
+	if (e.document.languageId != 'php' || !mLoader.settings) return;
 	let uri = e.document.uri;
 	let content = e.document.getText();
 	mLoader.parseLoader(content);
@@ -111,6 +113,7 @@ documents.onDidSave((e) => {
 	}
 });
 connection.onExecuteCommand((_: ExecuteCommandParams) => {
+	if (!mLoader.settings) return;
 	mLoader.initModels();
 	connection.window.showInformationMessage('refresh success!');
 });
